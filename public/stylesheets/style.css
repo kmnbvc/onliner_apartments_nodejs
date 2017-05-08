@@ -1,0 +1,13 @@
+body {
+    padding-top: 50px;
+}
+
+.selected {
+    background-color: lightgreen;
+}
+
+dialog {
+    height: 50%;
+    width: 80%;
+    overflow: scroll;
+}
