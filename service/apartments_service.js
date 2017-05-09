@@ -12,6 +12,10 @@ const getAll = () => {
     return query('SELECT * FROM apartments');
 };
 
+const getFavorites = () => {
+    return query('SELECT * FROM apartments a WHERE a.favorite = TRUE');
+};
+
 const save = (apartments) => {
     connection.beginTransaction(function (err) {
         if (err) throw err;
@@ -56,5 +60,6 @@ const query = (sql, params) => {
 
 module.exports = {
     getAll,
-    save
+    save,
+    getFavorites
 };

@@ -1,13 +1,12 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
-const new_apartments = require('./routes/new_apartments');
-const previous_apartments = require('./routes/previous_apartments');
+const favorites_apartments = require('./routes/favorites');
+const saved_apartments = require('./routes/saved');
 const details = require('./routes/details');
 
 const app = express();
@@ -23,8 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/new', new_apartments);
-app.use('/prev', previous_apartments);
+app.use('/favorites', favorites_apartments);
+app.use('/saved', saved_apartments);
 app.use('/details', details);
 
 // catch 404 and forward to error handler

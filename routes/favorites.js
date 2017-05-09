@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const apartments_service = require('../service/apartments_service');
-const apartments_model = require('../model/apartments');
 
 
 router.get('/', function(req, res, next) {
-
-
-    res.render('index', {title: 'New apartments', apartments: {}})
+    apartments_service.getFavorites()
+        .then((apartments) => res.render('index', {title: 'Favorites apartments', apartments}));
 });
-
 
 
 module.exports = router;

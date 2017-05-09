@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $(this).addClass('selected');
     });
 
-    $('a').attr('onclick', 'return false').on('click', function (event) {
+    $('td a').attr('onclick', 'return false').on('click', function (event) {
         const href = $(this).attr('href');
 
         $.get(('http://localhost:3000/details?target=' + href), function (html) {
@@ -13,13 +13,20 @@ document.addEventListener('DOMContentLoaded', function () {
             details.showModal();
 
             /*const iframe = document.createElement('iframe');
-            document.body.appendChild(iframe);
-            iframe.style.width = "640px";
-            iframe.style.height = "480px";
-            iframe.style.position = 'absolute';
-            iframe.contentWindow.document.open();
-            iframe.contentWindow.document.write(html);
-            iframe.contentWindow.document.close();*/
+             document.body.appendChild(iframe);
+             iframe.style.width = "640px";
+             iframe.style.height = "480px";
+             iframe.style.position = 'absolute';
+             iframe.contentWindow.document.open();
+             iframe.contentWindow.document.write(html);
+             iframe.contentWindow.document.close();*/
         })
     });
+
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    $(`nav li a[href='${window.location.pathname}']`).parents('li').addClass('active');
 });
