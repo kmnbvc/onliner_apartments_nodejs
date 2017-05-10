@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const apartments_service = require('../service/apartments_service');
+const apartments_db = require('../service/apartments_db');
 
 
 router.get('/', function(req, res, next) {
-    apartments_service.getFavorites()
+    apartments_db.getFavorites()
         .then((apartments) => res.render('index', {title: 'Favorites apartments', apartments}));
 });
 

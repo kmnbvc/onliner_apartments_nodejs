@@ -1,7 +1,6 @@
 const express = require('express');
 const request = require('request');
 const router = express.Router();
-const apartments_service = require('../service/apartments_service');
 
 router.get('/', function (req, res, next) {
     const url = req.query.target;
