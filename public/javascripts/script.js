@@ -11,15 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const details = document.getElementById('details');
             details.innerHTML = html;
             details.showModal();
-
-            /*const iframe = document.createElement('iframe');
-             document.body.appendChild(iframe);
-             iframe.style.width = "640px";
-             iframe.style.height = "480px";
-             iframe.style.position = 'absolute';
-             iframe.contentWindow.document.open();
-             iframe.contentWindow.document.write(html);
-             iframe.contentWindow.document.close();*/
         })
     });
 

@@ -5,7 +5,7 @@ const apartments_db = require('../service/apartments_db');
 
 router.get('/', function(req, res, next) {
     apartments_db.getAll()
-        .then((apartments) => res.render('index', {title: 'Previous apartments', apartments}))
+        .then((apartments) => res.render('table', {title: 'Previous apartments', apartments}))
 });
 
 

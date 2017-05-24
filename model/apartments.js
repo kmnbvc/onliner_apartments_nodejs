@@ -2,14 +2,7 @@
 
 
 const get_dto = (obj) => {
-    return {
-        id: obj.id,
-        url: obj.url,
-        price: obj.price.amount,
-        currency: obj.price.currency,
-        address: obj.location.address,
-        type: obj.rent_type
-    }
+    return Object.assign.apply({}, fields().map(field => map_field(field, obj)));
 };
 
 const get_dto_list = (objs) => {
@@ -20,4 +13,27 @@ const ids = (objs) => {
     return objs.map(obj => obj.id)
 };
 
-module.exports = {get_dto, get_dto_list, ids};
+const mappers = () => {
+    return {
+        id: (obj) => obj.id,
+        url: (obj) => obj.url,
+        price: (obj) => obj.price.amount,
+        currency: (obj) => obj.price.currency,
+        address: (obj) => obj.location.address,
+        type: (obj) => obj.rent_type,
+    }
+};
+
+const map_field = (field, obj) => {
+    return {[field]: mappers()[field](obj)};
+};
+
+const fields = () => {
+    return Object.keys(mappers());
+};
+
+const toArray = (apartments) => {
+    return apartments.map(ap => fields().map(field => ap[field]));
+};
+
+module.exports = {get_dto, get_dto_list, ids, fields, toArray};

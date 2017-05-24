@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    h3= title
+    table.table
+        thead
+            tr
+                th ID
+                th Price
+                th Type
+                th Address
+                th URL
+        tbody
+            each ap in apartments
+                tr
+                    td= ap.id
+                    td= (ap.price + ' ' + ap.currency)
+                    td= ap.type
+                    td= ap.address
+                    td
+                        a(href=ap.url, target='_blank')= ap.url

@@ -1,4 +1,6 @@
 const mysql = require('mysql');
+const apartments_model = require('../model/apartments');
+
 const connection = mysql.createConnection({
     host: 'localhost',
     database: 'onliner_apartments',
@@ -17,32 +19,23 @@ const getFavorites = () => {
 };
 
 const save = (apartments) => {
-    connection.beginTransaction(function (err) {
-        if (err) throw err;
+    return new Promise((resolve, reject) =>
+        connection.beginTransaction(error => {
+            if (error) throw error;
 
-        apartments.forEach(ap => {
-            connection.query('INSERT INTO apartments SET ?', ap, function (error, results, fields) {
-                if (error) {
-                    return connection.rollback(function () {
-                        throw error;
-                    });
-                }
-                connection.commit(function (err) {
-                    if (err) {
-                        return connection.rollback(function () {
-                            throw err;
-                        });
-                    }
-                    console.log('successfully saved apartment', ap.id);
-                });
-            });
-        });
-    });
+            const ids = apartments_model.ids(apartments);
+            connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], rollbackOnError(() => {
+                const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
+                const params = [apartments_model.toArray(apartments)];
+                connection.query(query, params, rollbackOnError(() => connection.commit(rollbackOnError(resolve))));
+            }));
+        })
+    )
 };
 
 const filterNew = (apartments) => {
     return getAll().then((existed) => {
-        const existed_ids = existed.map(a => a.id);
+        const existed_ids = apartments_model.ids(existed);
         return apartments.filter(a => !existed_ids.includes(a.id));
     })
 };
@@ -56,10 +49,18 @@ const query = (sql, params) => {
     })
 };
 
+const rollbackOnError = (callback) => (error) => {
+    if (error) return connection.rollback(() => {
+        throw error;
+    });
+    if (callback) callback();
+};
+
 // connection.end();
 
 module.exports = {
     getAll,
     save,
-    getFavorites
+    getFavorites,
+    filterNew
 };

@@ -5,7 +5,7 @@ const apartments_db = require('../service/apartments_db');
 
 router.get('/', function(req, res, next) {
     apartments_db.getFavorites()
-        .then((apartments) => res.render('index', {title: 'Favorites apartments', apartments}));
+        .then((apartments) => res.render('table', {title: 'Favorites apartments', apartments}));
 });
 
 
