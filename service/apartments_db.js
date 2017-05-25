@@ -50,9 +50,11 @@ const query = (sql, params) => {
 };
 
 const rollbackOnError = (callback) => (error) => {
-    if (error) return connection.rollback(() => {
-        throw error;
-    });
+    if (error) {
+        return connection.rollback(() => {
+            throw error;
+        })
+    }
     if (callback) callback();
 };
 

@@ -6,13 +6,12 @@ const apartments_db = require('../service/apartments_db');
 
 
 router.get('/', function (req, res, next) {
-    loadApartments().then(apartments =>
-        apartments_db.filterNew(apartments).then(apartments =>
-            res.render('index', {
-                title: `Apartments list (${apartments.length} items)`,
-                apartments: apartments_model.get_dto_list(apartments)
-            }))
-    );
+    loadApartments()
+        .then(apartments => apartments_db.filterNew(apartments))
+        .then(apartments => res.render('index', {
+            title: `Apartments list (${apartments.length} items)`,
+            apartments: apartments_model.get_dto_list(apartments)
+        }))
 });
 
 router.get('/save', function (req, res, next) {
@@ -30,7 +29,7 @@ const loadApartments = () => {
                 results.push(loadPage(page, (data) => data.apartments));
             }
 
-            Promise.all(results).then(values => resolve([].concat.apply([], values)));
+            Promise.all(results).then(values => resolve([].concat(...values)));
         })
     );
 };
