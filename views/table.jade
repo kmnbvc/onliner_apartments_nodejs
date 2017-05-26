@@ -5,7 +5,9 @@ block content
     table.table
         thead
             tr
+                th
                 th ID
+                th Updated
                 th Price
                 th Type
                 th Address
@@ -13,9 +15,12 @@ block content
         tbody
             each ap in apartments
                 tr
+                    td
+                        a.icon(href='#', onclick='toggle_favorite(#{JSON.stringify(ap)}, this); return false;', class=ap.favorite ? 'favorite' : 'not-favorite')
                     td= ap.id
+                    td= moment(ap.updated).format('YYYY-MM-DD HH:mm:ss')
                     td= (ap.price + ' ' + ap.currency)
                     td= ap.type
                     td= ap.address
                     td
-                        a(href=ap.url, target='_blank')= ap.url
+                        a.showModal(href=ap.url, target='_blank')= ap.url

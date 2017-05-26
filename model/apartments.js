@@ -1,4 +1,4 @@
-//
+const moment = require('moment');
 
 
 const get_dto = (obj) => {
@@ -21,6 +21,7 @@ const mappers = () => {
         currency: (obj) => obj.price.currency,
         address: (obj) => obj.location.address,
         type: (obj) => obj.rent_type,
+        updated: (obj) => moment(obj.last_time_up).format('YYYY-MM-DD HH:mm:ss')
     }
 };
 

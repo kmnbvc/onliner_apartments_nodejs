@@ -3,6 +3,7 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const moment = require('moment');
 
 const index = require('./routes/index');
 const favorites_apartments = require('./routes/favorites');
@@ -25,6 +26,8 @@ app.use('/', index);
 app.use('/favorites', favorites_apartments);
 app.use('/saved', saved_apartments);
 app.use('/details', details);
+
+app.locals.moment = moment;
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

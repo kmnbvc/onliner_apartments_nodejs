@@ -11,3 +11,20 @@ dialog {
     width: 80%;
     overflow: scroll;
 }
+
+a.icon, a.icon:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.icon.favorite:before {
+    content: '★';
+}
+
+a.icon.not-favorite:before {
+    content: '☆';
+}
+
+a.icon.not-favorite:hover:before {
+    content: '★';
+}

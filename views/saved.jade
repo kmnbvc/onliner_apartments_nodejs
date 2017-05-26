@@ -1,0 +1,5 @@
+extends table
+
+block buttons
+    form.navbar-form.navbar-right(action='/saved/delete')
+        button.btn.btn-default(disabled=apartments.length <= 0) Delete all

@@ -40,6 +40,19 @@ const filterNew = (apartments) => {
     })
 };
 
+const deleteAll = () => {
+    return query('DELETE FROM apartments');
+};
+
+const toggleFavorite = (apartment) => {
+    return query('SELECT * FROM apartments WHERE id = ?', apartment.id).then(existed => {
+        const actual = existed[0] || apartment;
+        return existed[0]
+            ? query('UPDATE apartments SET favorite = ? WHERE id = ?', [!actual.favorite, actual.id])
+            : query('INSERT INTO apartments SET ?', Object.assign(actual, {favorite: true}));
+    })
+};
+
 const query = (sql, params) => {
     return new Promise((resolve, reject) => {
         connection.query(sql, params, function (err, rows, fields) {
@@ -64,5 +77,7 @@ module.exports = {
     getAll,
     save,
     getFavorites,
-    filterNew
+    filterNew,
+    deleteAll,
+    toggleFavorite
 };

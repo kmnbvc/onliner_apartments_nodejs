@@ -1,0 +1,32 @@
+{
+  "id": 231667,
+  "price": {
+    "amount": "220.00",
+    "currency": "USD",
+    "converted": {
+      "BYN": {
+        "amount": "407.44",
+        "currency": "BYN"
+      },
+      "USD": {
+        "amount": "220.00",
+        "currency": "USD"
+      }
+    }
+  },
+  "rent_type": "1_room",
+  "location": {
+    "address": "\u041c\u0438\u043d\u0441\u043a, \u0443\u043b\u0438\u0446\u0430 \u042f\u043d\u0430 \u0427\u0435\u0447\u043e\u0442\u0430, 36",
+    "user_address": "\u041c\u0438\u043d\u0441\u043a, \u0443\u043b\u0438\u0446\u0430 \u042f\u043d\u0430 \u0427\u0435\u0447\u043e\u0442\u0430, 36",
+    "latitude": 53.847092,
+    "longitude": 27.483559
+  },
+  "photo": "https:\/\/content.onliner.by\/apartment_rentals\/1899031\/600x400\/07c272ed1e43583a56d843cc5d9a6eb2.jpeg",
+  "contact": {
+    "owner": true
+  },
+  "created_at": "2017-05-26T22:23:14+0300",
+  "last_time_up": "2017-05-26T22:23:14+0300",
+  "up_available_in": 82270,
+  "url": "https:\/\/r.onliner.by\/ak\/apartments\/231667"
+}
