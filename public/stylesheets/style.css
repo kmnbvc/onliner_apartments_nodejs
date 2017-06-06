@@ -28,3 +28,19 @@ a.icon.not-favorite:before {
 a.icon.not-favorite:hover:before {
     content: '★';
 }
+
+table.sources {
+    table-layout: fixed;
+}
+
+table.sources tr>th:nth-child(1) {
+    width: 15%;
+}
+
+table.sources tr>td:nth-child(2) {
+    word-break: break-all;
+}
+
+table.sources tr>th:nth-child(3) {
+    width: 5%;
+}
