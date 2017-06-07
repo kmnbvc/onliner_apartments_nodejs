@@ -20,5 +20,8 @@ block content
                     td= source.name
                     td= source.url
                     td
-                        input(type='checkbox', checked=!!source.active, onchange='change_source_state(#{JSON.stringify(source)}, this.checked)')
-                        a(href='#' onclick='remove_source("#{source.name}", this); return false;') Del
+                        div.btn-group
+                            button.btn.btn-default.btn-sm(onclick='change_source_state(#{JSON.stringify(source)}, this)')
+                                span.glyphicon(class=source.active ? 'glyphicon-remove' : 'glyphicon-ok')
+                            button.btn.btn-default.btn-sm(onclick='remove_source("#{source.name}", this); return false;', title='Delete')
+                                span.glyphicon.glyphicon-trash

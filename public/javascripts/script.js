@@ -6,9 +6,12 @@ function toggle_favorite(apartment, elem) {
     });
 }
 
-function change_source_state(source, value) {
-    source.active = value;
-    $.post('/sources/change_state', source, function (data) {});
+function change_source_state(source, elem) {
+    source.active = !(elem.source_state || source.active);
+    $.post('/sources/change_state', source, function (data) {
+        elem.source_state = source.active;
+        $(elem).children('span.glyphicon').toggleClass('glyphicon-ok glyphicon-remove');
+    });
 }
 
 function remove_source(name, elem) {
