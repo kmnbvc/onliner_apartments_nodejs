@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const apartments_provider = require('../service/apartments_provider');
+const sources_db = require('../service/sources_db');
 
 
 router.get('/', function (req, res, next) {
-    apartments_provider.getSources().then(sources => res.render('sources', {sources}));
+    sources_db.getAllSources().then(sources => res.render('sources', {sources}));
 });
-
 
 router.post('/change_state', function (req, res, next) {
     const source = req.body;
     source.active = source.active === 'true';
-    apartments_provider.update(source).then(() => res.send('done'));
+    sources_db.update(source).then(() => res.send('done'));
 });
 
 router.post('/remove', function (req, res, next) {
     const name = req.body.name;
-    apartments_provider.remove(name).then(() => res.send('done'));
+    sources_db.remove(name).then(() => res.send('done'));
 });
 
 module.exports = router;
