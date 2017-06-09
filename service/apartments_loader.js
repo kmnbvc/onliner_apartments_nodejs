@@ -3,7 +3,9 @@ const sources_db = require('./sources_db');
 
 
 const loadApartments = () => {
-    return sources_db.getActiveSources().then(sources => concatResults(sources.map(source => loadAllPages(source.url))));
+    return sources_db.getActiveSources()
+        .then(sources => concatResults(sources.map(source => loadAllPages(source.url))))
+        .then(apartments => unique(apartments));
 };
 
 const loadAllPages = (url) => {
@@ -25,7 +27,7 @@ const loadPage = (url, page, mapper = (data) => data) => {
 
     return new Promise((resolve, reject) =>
         request({url: current_page, headers}, (error, response, body) => {
-            if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode === 200) {
                 resolve(mapper(JSON.parse(body)));
             } else {
                 reject(error || `Response status code is ${response.statusCode}. Something went wrong.`)
@@ -35,9 +37,12 @@ const loadPage = (url, page, mapper = (data) => data) => {
 };
 
 const concatResults = (results) => {
-    return Promise.all(results).then(values => {
-        return [].concat(...values)
-    });
+    return Promise.all(results).then(values => [].concat(...values));
+};
+
+const unique = (apartments) => {
+    const seen = new Set();
+    return apartments.filter(ap => seen.has(ap.id) ? false : seen.add(ap.id));
 };
 
 module.exports = {
