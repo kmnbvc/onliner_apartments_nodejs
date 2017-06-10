@@ -18,4 +18,9 @@ router.post('/remove', function (req, res, next) {
     sources_db.remove(name).then(() => res.send('done'));
 });
 
+router.post('/add', function (req, res, next) {
+    const source = req.body;
+    sources_db.create(source).then(() => res.redirect(req.baseUrl));
+});
+
 module.exports = router;

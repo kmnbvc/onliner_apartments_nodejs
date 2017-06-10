@@ -1,9 +1,7 @@
 extends layout
 
-//block buttons
-//    form.navbar-form.navbar-right(action='/save')
-//        input(type='hidden', name='sources', value='')
-//        button.btn.btn-default Save
+block buttons
+    button.btn.btn-default.navbar-btn.pull-right(onclick='show_modal("add_source")') Add
 
 block content
     h3 Apartments source urls
@@ -25,3 +23,16 @@ block content
                                 span.glyphicon(class=source.active ? 'glyphicon-remove' : 'glyphicon-ok')
                             button.btn.btn-default.btn-sm(onclick='remove_source("#{source.name}", this); return false;', title='Delete')
                                 span.glyphicon.glyphicon-trash
+
+
+    dialog#add_source
+        form(action='/sources/add' method='POST')
+            div.form-group
+                label(for='name') Название
+                input.form-control(id='name' name='name' type='text')
+            div.form-group
+                label(for='url') Ссылка
+                textarea.form-control(id='url' name='url' rows='5')
+            div.btn-toolbar
+                button.btn.btn-default Сохранить
+                button.btn.btn-default(onclick='hide_modal("add_source"); return false;') Отмена

@@ -1,6 +1,6 @@
 extends table
 
 block buttons
-    form.navbar-form.navbar-right(action='/save')
+    form.navbar-form.navbar-right(action='/save' method='POST')
         input(type='hidden', name='apartments', value='#{JSON.stringify(apartments)}')
         button.btn.btn-default(disabled=apartments.length <= 0) Save new apartments

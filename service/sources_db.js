@@ -39,6 +39,10 @@ const remove = (name) => {
     );
 };
 
+const create = (source) => {
+    return query('INSERT INTO sources SET ?', source);
+};
+
 const query = (sql, params) => {
     return new Promise((resolve, reject) => {
         connection.query(sql, params, function (err, rows, fields) {
@@ -61,6 +65,7 @@ module.exports = {
     getAllSources,
     getActiveSources,
     update,
-    remove
+    remove,
+    create
 };
 

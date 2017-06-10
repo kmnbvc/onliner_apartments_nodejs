@@ -9,7 +9,7 @@ body {
 dialog {
     height: 50%;
     width: 80%;
-    overflow: scroll;
+    border: 1px solid lightgrey;
 }
 
 a.icon, a.icon:hover {

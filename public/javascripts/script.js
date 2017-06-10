@@ -1,5 +1,3 @@
-
-
 function toggle_favorite(apartment, elem) {
     $.post('/favorites/add', apartment, function (data) {
         $(elem).toggleClass('favorite not-favorite');
@@ -18,6 +16,14 @@ function remove_source(name, elem) {
     $.post('/sources/remove', {name}, function (data) {
         $(elem).parents('tr').remove();
     });
+}
+
+function show_modal(id) {
+    document.getElementById(id).showModal();
+}
+
+function hide_modal(id) {
+    document.getElementById(id).close();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
