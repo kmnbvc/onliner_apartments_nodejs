@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 const getAll = () => {
-    return query('SELECT * FROM apartments');
+    return query('SELECT * FROM apartments ORDER BY updated DESC');
 };
 
 const getFavorites = () => {
