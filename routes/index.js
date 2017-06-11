@@ -11,12 +11,12 @@ router.get('/', function (req, res, next) {
         .then(apartments => res.render('index', {
             title: `Apartments list`,
             apartments: apartments_model.get_dto_list(apartments)
-        }))
+        }), next)
 });
 
 router.post('/save', function (req, res, next) {
     const apartments = JSON.parse(req.body.apartments);
-    apartments_db.save(apartments).then(result => res.redirect('/saved'));
+    apartments_db.save(apartments).then(result => res.redirect('/saved'), next);
 });
 
 module.exports = router;

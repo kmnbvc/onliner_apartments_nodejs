@@ -1,4 +1,11 @@
-const request = require('request');
+const client = require('flashheart').createClient({
+    name: 'apartments_loader',
+    logger: console,
+    retries: 5,
+    retryTimeout: 500,
+    rateLimitLimit: 5,
+    rateLimitInterval: 1000
+});
 const sources_db = require('./sources_db');
 
 
@@ -23,16 +30,9 @@ const loadAllPages = (url) => {
 
 const loadPage = (url, page, mapper = (data) => data) => {
     const current_page = url.replace('page=1', 'page=' + page);
-    const headers = {'Accept': 'application/json'};
 
     return new Promise((resolve, reject) =>
-        request({url: current_page, headers}, (error, response, body) => {
-            if (!error && response.statusCode === 200) {
-                resolve(mapper(JSON.parse(body)));
-            } else {
-                reject(error || `Response status code is ${response.statusCode}. Something went wrong.`)
-            }
-        })
+        client.get(current_page, (err, body) => err ? reject(err) : resolve(mapper(body)))
     );
 };
 

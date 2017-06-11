@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', function (req, res, next) {
     const url = req.query.target;
-    load_page(url).then(page => res.send(page));
+    load_page(url).then(page => res.send(page), next);
 });
 
 const load_page = (url) => {
