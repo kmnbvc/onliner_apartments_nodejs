@@ -7,7 +7,7 @@ body {
 }
 
 dialog {
-    height: 50%;
+    min-height: 50%;
     width: 80%;
     border: 1px solid lightgrey;
 }

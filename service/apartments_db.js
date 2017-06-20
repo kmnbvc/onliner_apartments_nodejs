@@ -14,6 +14,10 @@ const getAll = () => {
     return query('SELECT * FROM apartments ORDER BY updated DESC');
 };
 
+const getActive = () => {
+    return query('SELECT * FROM apartments a WHERE a.active = TRUE ORDER BY a.updated DESC');
+};
+
 const getFavorites = () => {
     return query('SELECT * FROM apartments a WHERE a.favorite = TRUE');
 };
@@ -53,6 +57,11 @@ const toggleFavorite = (apartment) => {
     })
 };
 
+const save_details = (apartment) => {
+    const details = apartment.details;
+    return query('UPDATE apartments SET ? WHERE id = ?', [details, apartment.id]);
+};
+
 const query = (sql, params) => {
     return new Promise((resolve, reject) => {
         connection.query(sql, params, function (err, rows, fields) {
@@ -75,7 +84,9 @@ const rollbackOnError = (callback) => (error) => {
 
 module.exports = {
     getAll,
+    getActive,
     save,
+    save_details,
     getFavorites,
     filterNew,
     deleteAll,

@@ -21,7 +21,8 @@ const mappers = () => {
         currency: (obj) => obj.price.currency,
         address: (obj) => obj.location.address || obj.location.user_address,
         type: (obj) => obj.rent_type,
-        updated: (obj) => moment(obj.last_time_up).format('YYYY-MM-DD HH:mm:ss')
+        updated: (obj) => moment(obj.last_time_up).format('YYYY-MM-DD HH:mm:ss'),
+        photo_url: (obj) => obj.photo
     }
 };
 
