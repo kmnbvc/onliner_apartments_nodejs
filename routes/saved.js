@@ -6,7 +6,7 @@ const sse = require('../middleware/sse');
 
 router.get('/', function (req, res, next) {
     apartments_db.getAll()
-        .then(apartments => res.render('saved', {title: 'Previous apartments', apartments}), next)
+        .then(apartments => res.render('saved', {title: 'Previous apartments', apartments, showDetails: true}), next)
 });
 
 router.get('/delete', function (req, res, next) {

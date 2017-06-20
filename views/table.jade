@@ -2,16 +2,18 @@ extends layout
 
 block content
     h3= title + ' (' + apartments.length + ' items)'
-    table.table
+    table.table.apartments
         thead
             tr
-                th
-                th ID
-                th Updated
-                th Price
-                th Type
-                th Address
-                th URL
+                th(width='2%')
+                th(width='6%') ID
+                th(width='13%') Updated
+                th(width='8%') Price
+                th(width='6%') Type
+                th(width=showDetails ? '15%' : '40%') Address
+                if showDetails
+                    th(width='45%') Text
+                th(width='5%') URL
         tbody
             each ap in apartments
                 tr
@@ -22,5 +24,7 @@ block content
                     td= (ap.price + ' ' + ap.currency)
                     td= ap.type
                     td= ap.address
+                    if showDetails
+                        td= ap.text
                     td
-                        a(href=ap.url, target='_blank')= ap.url
+                        a(href=ap.url, target='_blank') Open
