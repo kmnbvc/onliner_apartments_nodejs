@@ -34,7 +34,7 @@ const parse_details = (page) => {
     return {
         text: page('.apartment-info__sub-line_extended-bottom').text().trim(),
         phone: page('.apartment-info__list_phones a').text().trim(),
-        //images: page('.apartment-gallery__slide').map((index, element) => element.attribs['data-thumb']).toArray()
+        images: page('.apartment-gallery__slide').map((index, element) => element.attribs['data-thumb']).toArray()
     }
 };
 

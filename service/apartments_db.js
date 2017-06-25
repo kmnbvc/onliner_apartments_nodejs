@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
     password: 'root'
 });
 
+//todo connection pool
 connection.connect();
 
 const getAll = () => {
@@ -28,10 +29,10 @@ const save = (apartments) => {
             if (error) throw error;
 
             const ids = apartments_model.ids(apartments);
-            connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], rollbackOnError(() => {
+            connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], actionTx(() => {
                 const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
                 const params = [apartments_model.toArray(apartments)];
-                connection.query(query, params, rollbackOnError(() => connection.commit(rollbackOnError(resolve))));
+                connection.query(query, params, actionTx(() => connection.commit(actionTx(resolve))));
             }));
         })
     )
@@ -58,8 +59,28 @@ const toggleFavorite = (apartment) => {
 };
 
 const save_details = (apartment) => {
+    const id = apartment.id;
     const details = apartment.details;
-    return query('UPDATE apartments SET ? WHERE id = ?', [details, apartment.id]);
+    const images = details.images || [];
+    delete details.images;
+    return new Promise((resolve, reject) =>
+        connection.beginTransaction(error => {
+            if (error) throw error;
+
+            connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id],
+                (images.length > 0) ? save_images(id, images, resolve) : commitTx(resolve));
+        })
+    );
+};
+
+const save_images = (id, images = [], resolve) => {
+    if (images.length > 0) {
+        connection.query('DELETE FROM images WHERE apartment_id = ?', [id], actionTx(() => {
+            const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
+            const params = [images.map(img => [id, img])];
+            connection.query(query, params, commitTx(resolve));
+        }))
+    }
 };
 
 const query = (sql, params) => {
@@ -71,13 +92,27 @@ const query = (sql, params) => {
     })
 };
 
-const rollbackOnError = (callback) => (error) => {
+const beginTx = (callback) => {
+    return new Promise((resolve, reject) =>
+        connection.beginTransaction(error => {
+            if (error) throw error;
+
+            callback();
+        })
+    )
+};
+
+const actionTx = (callback) => (error) => {
     if (error) {
         return connection.rollback(() => {
             throw error;
         })
     }
     if (callback) callback();
+};
+
+const commitTx = (callback) => {
+    return actionTx(() => connection.commit(actionTx(callback)));
 };
 
 // connection.end();
