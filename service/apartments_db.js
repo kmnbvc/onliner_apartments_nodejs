@@ -24,18 +24,14 @@ const getFavorites = () => {
 };
 
 const save = (apartments) => {
-    return new Promise((resolve, reject) =>
-        connection.beginTransaction(error => {
-            if (error) throw error;
-
-            const ids = apartments_model.ids(apartments);
-            connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], actionTx(() => {
-                const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
-                const params = [apartments_model.toArray(apartments)];
-                connection.query(query, params, actionTx(() => connection.commit(actionTx(resolve))));
-            }));
-        })
-    )
+    return startTx((resolve, reject) => {
+        const ids = apartments_model.ids(apartments);
+        connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], actionTx(() => {
+            const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
+            const params = [apartments_model.toArray(apartments)];
+            connection.query(query, params, commitTx(resolve));
+        }))
+    })
 };
 
 const filterNew = (apartments) => {
@@ -63,14 +59,9 @@ const save_details = (apartment) => {
     const details = apartment.details;
     const images = details.images || [];
     delete details.images;
-    return new Promise((resolve, reject) =>
-        connection.beginTransaction(error => {
-            if (error) throw error;
 
-            connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id],
-                (images.length > 0) ? save_images(id, images, resolve) : commitTx(resolve));
-        })
-    );
+    return startTx((resolve, reject) => connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id],
+        (images.length > 0) ? save_images(id, images, resolve) : commitTx(resolve)));
 };
 
 const save_images = (id, images = [], resolve) => {
@@ -92,12 +83,12 @@ const query = (sql, params) => {
     })
 };
 
-const beginTx = (callback) => {
+const startTx = (callback) => {
     return new Promise((resolve, reject) =>
         connection.beginTransaction(error => {
             if (error) throw error;
 
-            callback();
+            callback(resolve, reject);
         })
     )
 };
