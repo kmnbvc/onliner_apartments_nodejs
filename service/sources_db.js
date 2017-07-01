@@ -1,64 +1,25 @@
-const mysql = require('mysql');
-
-const connection = mysql.createConnection({
-    host: 'localhost',
-    database: 'onliner_apartments',
-    user: 'root',
-    password: 'root'
-});
-
-connection.connect();
+const db = require('./db');
 
 const getAllSources = () => {
-    return query("SELECT * FROM sources");
+    return db.query("SELECT * FROM sources");
 };
 
 const getActiveSources = () => {
-    return query('SELECT * FROM sources WHERE active = TRUE');
+    return db.query('SELECT * FROM sources WHERE active = TRUE');
 };
 
 const update = (source) => {
-    return new Promise((resolve, reject) =>
-        connection.beginTransaction(error => {
-            if (error) throw error;
-
-            connection.query('UPDATE sources SET ? WHERE name = ?', [source, source.name],
-                rollbackOnError(() => connection.commit(rollbackOnError(resolve))));
-        })
-    );
+    return db.createTx().then(tx => tx.start((resolve, reject) =>
+        tx.connection.query('UPDATE sources SET ? WHERE name = ?', [source, source.name], tx.commit(resolve))));
 };
 
 const remove = (name) => {
-    return new Promise((resolve, reject) =>
-        connection.beginTransaction(error => {
-            if (error) throw error;
-
-            connection.query('DELETE FROM sources WHERE name = ?', [name],
-                rollbackOnError(() => connection.commit(rollbackOnError(resolve))));
-        })
-    );
+    return db.createTx().then(tx => tx.start((resolve, reject) =>
+        tx.connection.query('DELETE FROM sources WHERE name = ?', [name], tx.commit(resolve))));
 };
 
 const create = (source) => {
-    return query('INSERT INTO sources SET ?', source);
-};
-
-const query = (sql, params) => {
-    return new Promise((resolve, reject) => {
-        connection.query(sql, params, function (err, rows, fields) {
-            if (err) reject(err);
-            resolve(rows);
-        })
-    })
-};
-
-const rollbackOnError = (callback) => (error) => {
-    if (error) {
-        return connection.rollback(() => {
-            throw error;
-        })
-    }
-    if (callback) callback();
+    return db.query('INSERT INTO sources SET ?', source);
 };
 
 module.exports = {
