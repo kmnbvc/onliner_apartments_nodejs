@@ -13,7 +13,9 @@ const parse = (obj) => {
     const result = {};
 
     for (let [key, value] of entries(obj)) {
-        if (value === 'true') {
+        if (value === '') {
+            result[key] = null;
+        } else if (value === 'true') {
             result[key] = true;
         } else if (value === 'false') {
             result[key] = false;

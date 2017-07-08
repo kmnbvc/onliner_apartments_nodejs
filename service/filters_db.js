@@ -1,7 +1,7 @@
 const db = require('./db');
 
 const getAll = () => {
-    return db.query('SELECT * FROM filters');
+    return db.query('SELECT * FROM filters ORDER BY name');
 };
 
 const get = (name) => {

@@ -11,8 +11,6 @@ router.get('/', function (req, res, next) {
 
 router.post('/add', function (req, res, next) {
     const filter = req.body;
-    filter.from_date = filter.from_date || null;
-    filter.source_name = filter.source_name || null;
     filters_db.create(filter).then(() => res.redirect(req.baseUrl), next);
 });
 

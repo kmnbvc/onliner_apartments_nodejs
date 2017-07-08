@@ -30,14 +30,12 @@ app.use(function (req, res, next) {
 const index = require('./routes/index');
 const favorites_apartments = require('./routes/favorites');
 const saved_apartments = require('./routes/saved');
-const details = require('./routes/details');
 const sources = require('./routes/sources');
 const filters = require('./routes/filters');
 
 app.use('/', index);
 app.use('/favorites', favorites_apartments);
 app.use('/saved', saved_apartments);
-app.use('/details', details);
 app.use('/sources', sources);
 app.use('/filters', filters);
 

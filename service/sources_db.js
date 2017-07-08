@@ -1,11 +1,11 @@
 const db = require('./db');
 
 const getAll = () => {
-    return db.query("SELECT * FROM sources");
+    return db.query("SELECT * FROM sources ORDER BY name");
 };
 
 const getActiveSources = () => {
-    return db.query('SELECT * FROM sources WHERE active = TRUE');
+    return db.query('SELECT * FROM sources WHERE active = TRUE ORDER BY name');
 };
 
 const update = (source) => {
