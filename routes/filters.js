@@ -14,6 +14,11 @@ router.post('/add', function (req, res, next) {
     filters_db.create(filter).then(() => res.redirect(req.baseUrl), next);
 });
 
+router.post('/update', function (req, res, next) {
+    const filter = req.body;
+    filters_db.update(filter).then(() => res.redirect(req.baseUrl), next);
+});
+
 router.post('/remove', function (req, res, next) {
     const name = req.body.name;
     filters_db.remove(name).then(() => res.redirect(req.baseUrl), next);

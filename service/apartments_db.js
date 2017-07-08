@@ -19,6 +19,7 @@ const search = (filter) => {
         (filter.from_date ? ` AND a.updated >= ${filter.from_date}` : '') +
         (filter.active === 'ACTIVE_ONLY' ? ' AND a.active = TRUE' : '') +
         (filter.active === 'INACTIVE_ONLY' ? ' AND a.active = FALSE' : '') +
+        (filter.source_name ? ` AND a.source_name = '${filter.source_name}'` : '') +
         ' ORDER BY a.updated DESC';
 
     return db.query(query);

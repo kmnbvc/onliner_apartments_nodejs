@@ -1,7 +1,7 @@
 extends layout
 
 block buttons
-    button.btn.btn-default.navbar-btn.pull-right(onclick='show_modal("add_filter")') Add
+    button.btn.btn-default.navbar-btn.pull-right(onclick='add_filter()') Add
 
 block content
     h3 Apartments filters
@@ -23,6 +23,7 @@ block content
                     td= filter.source_name
                     td
                         div.btn-group
+                            button.btn.btn-default.btn-sm(onclick='edit_filter(#{JSON.stringify(filter)}); return false;') Edit
                             button.btn.btn-default.btn-sm(onclick='remove_filter("#{filter.name}", this); return false;', title='Delete')
                                 span.glyphicon.glyphicon-trash
 

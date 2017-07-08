@@ -24,7 +24,8 @@ const mappers = () => {
         updated: (obj) => moment(obj.last_time_up).format('YYYY-MM-DD HH:mm:ss'),
         photo_url: (obj) => obj.photo,
         active: (obj) => true,
-        favorite: (obj) => false
+        favorite: (obj) => false,
+        source_name: (obj) => obj.source.name
     }
 };
 

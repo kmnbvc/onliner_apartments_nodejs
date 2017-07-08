@@ -11,29 +11,34 @@ const sources_db = require('./sources_db');
 
 const loadApartments = () => {
     return sources_db.getActiveSources()
-        .then(sources => concatResults(sources.map(source => loadAllPages(source.url))))
+        .then(sources => concatResults(sources.map(source => loadAllPages(source))))
         .then(apartments => unique(apartments));
 };
 
-const loadAllPages = (url) => {
-    return loadPage(url, 1).then(data => {
+const loadAllPages = (source) => {
+    return loadPage(source, 1).then(data => {
         const total_pages = data.page.last;
-        const results = [data.apartments];
+        const results = [extract_results(source, data)];
 
         for (let page = 2; page <= total_pages; page++) {
-            results.push(loadPage(url, page, (data) => data.apartments));
+            results.push(loadPage(source, page, extract_results));
         }
 
         return concatResults(results);
     });
 };
 
-const loadPage = (url, page, mapper = (data) => data) => {
-    const current_page = url.replace('page=1', 'page=' + page);
+const loadPage = (source, page, mapper = (source, data) => data) => {
+    const current_page = source.url.replace('page=1', 'page=' + page);
 
     return new Promise((resolve, reject) =>
-        client.get(current_page, (err, body) => err ? reject(err) : resolve(mapper(body)))
+        client.get(current_page, (err, body) => err ? reject(err) : resolve(mapper(source, body)))
     );
+};
+
+const extract_results = (source, data) => {
+    const apartments = data.apartments;
+    return apartments.map(ap => Object.assign(ap, {source}));
 };
 
 const concatResults = (results) => {

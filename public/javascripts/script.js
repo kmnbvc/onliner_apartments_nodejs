@@ -18,6 +18,20 @@ function remove_source(name, elem) {
     })
 }
 
+function add_filter() {
+    $('form', '#add_filter')[0].reset();
+    $('form', '#add_filter').attr('action', '/filters/add');
+    show_modal('add_filter');
+}
+
+function edit_filter(filter) {
+    for (let [key, value] of entries(filter)) {
+        $(`:input[name=${key}]`, '#add_filter').val(value);
+    }
+    $('form', '#add_filter').attr('action', '/filters/update');
+    show_modal('add_filter');
+}
+
 function remove_filter(name, elem) {
     sendPost('/filters/remove', {name}, function (data) {
         $(elem).parents('tr').remove();
@@ -36,6 +50,12 @@ function show_modal(id) {
 
 function hide_modal(id) {
     document.getElementById(id).close();
+}
+
+function* entries(obj) {
+    for (let key of Object.keys(obj)) {
+        yield [key, obj[key]];
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
