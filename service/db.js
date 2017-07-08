@@ -14,7 +14,14 @@ const connect = function (callback) {
         host: 'localhost',
         database: 'onliner_apartments',
         user: 'root',
-        password: 'root'
+        password: 'root',
+        dateStrings: true,
+        typeCast: function (field, next) {
+            if (field.type === 'TINY' && field.length === 1) {
+                return (field.string() === '1');
+            }
+            return next();
+        }
     });
 
     callback();

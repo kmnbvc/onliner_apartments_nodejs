@@ -1,0 +1,53 @@
+extends layout
+
+block buttons
+    button.btn.btn-default.navbar-btn.pull-right(onclick='show_modal("add_filter")') Add
+
+block content
+    h3 Apartments filters
+
+    table.table.filters
+        thead
+            tr
+                th Name
+                th Active
+                th From date
+                th Source
+                th Actions
+        tbody
+            each filter in filters
+                tr
+                    td= filter.name
+                    td= filter.active
+                    td= format_date(filter.from_date)
+                    td= filter.source_name
+                    td
+                        div.btn-group
+                            button.btn.btn-default.btn-sm(onclick='remove_filter("#{filter.name}", this); return false;', title='Delete')
+                                span.glyphicon.glyphicon-trash
+
+
+
+    dialog#add_filter
+        form(action='/filters/add' method='POST')
+            div.form-group
+                label(for='name') Name
+                input.form-control(id='name' name='name' type='text')
+            div.form-group
+                label(for='from_date') From date
+                input.form-control(id='from_date' name='from_date' type='date')
+            div.form-group
+                label(for='active') Active
+                select.form-control(id='active' name='active')
+                    option ALL
+                    option ACTIVE_ONLY
+                    option INACTIVE_ONLY
+            div.form-group
+                label(for='source_name') Source
+                select.form-control(id='source_name' name='source_name')
+                    option(value='') None
+                    each source in sources
+                        option= source.name
+            div.btn-toolbar
+                button.btn.btn-default Сохранить
+                button.btn.btn-default(onclick='hide_modal("add_filter"); return false;') Отмена

@@ -44,3 +44,11 @@ table.sources tr>td:nth-child(2) {
 table.sources tr>th:nth-child(3) {
     width: 8%;
 }
+
+tr.not-active {
+    opacity: 0.2;
+}
+
+span.caret {
+    margin-left: 5px;
+}

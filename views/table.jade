@@ -16,11 +16,11 @@ block content
                 th(width='5%') URL
         tbody
             each ap in apartments
-                tr
+                tr(class=ap.active ? '' : 'not-active')
                     td
                         a.icon(href='#', onclick='toggle_favorite(#{JSON.stringify(ap)}, this); return false;', class=ap.favorite ? 'favorite' : 'not-favorite')
                     td= ap.id
-                    td= moment(ap.updated).format('YYYY-MM-DD HH:mm:ss')
+                    td= format_date(ap.updated)
                     td= (ap.price + ' ' + ap.currency)
                     td= ap.type
                     td= ap.address

@@ -1,6 +1,6 @@
 const db = require('./db');
 
-const getAllSources = () => {
+const getAll = () => {
     return db.query("SELECT * FROM sources");
 };
 
@@ -23,7 +23,7 @@ const create = (source) => {
 };
 
 module.exports = {
-    getAllSources,
+    getAll,
     getActiveSources,
     update,
     remove,

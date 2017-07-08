@@ -1,11 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const apartments_db = require('../service/apartments_db');
+const filters_db = require('../service/filters_db');
 const apartment_details = require('../service/apartments_details');
 const sse = require('../middleware/sse');
 
 router.get('/', function (req, res, next) {
     apartments_db.getAll()
+        .then(apartments => res.render('saved', {title: 'Previous apartments', apartments, showDetails: true}), next)
+});
+
+router.get('/filter/:filter', function (req, res, next) {
+    const filter_name = req.params.filter;
+    filters_db.get(filter_name)
+        .then(filter => apartments_db.search(filter))
         .then(apartments => res.render('saved', {title: 'Previous apartments', apartments, showDetails: true}), next)
 });
 

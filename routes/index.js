@@ -8,10 +8,8 @@ const apartments_db = require('../service/apartments_db');
 router.get('/', function (req, res, next) {
     apartments_loader.loadApartments()
         .then(apartments => apartments_db.filterNew(apartments))
-        .then(apartments => res.render('index', {
-            title: `Apartments list`,
-            apartments: apartments_model.get_dto_list(apartments)
-        }), next)
+        .then(apartments => apartments_model.get_dto_list(apartments))
+        .then(apartments => res.render('index', {title: `Apartments list`, apartments}), next)
 });
 
 router.post('/save', function (req, res, next) {

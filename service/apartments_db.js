@@ -1,6 +1,6 @@
 const db = require('./db');
 const apartments_model = require('../model/apartments');
-
+const moment = require('moment');
 
 const getAll = () => {
     return db.query('SELECT * FROM apartments ORDER BY updated DESC');
@@ -12,6 +12,16 @@ const getActive = () => {
 
 const getFavorites = () => {
     return db.query('SELECT * FROM apartments a WHERE a.favorite = TRUE');
+};
+
+const search = (filter) => {
+    const query = 'SELECT * FROM apartments a WHERE 1=1 ' +
+        (filter.from_date ? ` AND a.updated >= ${filter.from_date}` : '') +
+        (filter.active === 'ACTIVE_ONLY' ? ' AND a.active = TRUE' : '') +
+        (filter.active === 'INACTIVE_ONLY' ? ' AND a.active = FALSE' : '') +
+        ' ORDER BY a.updated DESC';
+
+    return db.query(query);
 };
 
 const save = (apartments) => {
@@ -37,12 +47,8 @@ const deleteAll = () => {
 };
 
 const toggleFavorite = (apartment) => {
-    return db.query('SELECT * FROM apartments WHERE id = ?', apartment.id).then(existed => {
-        const actual = existed[0] || apartment;
-        return existed[0]
-            ? db.query('UPDATE apartments SET favorite = ? WHERE id = ?', [!actual.favorite, actual.id])
-            : db.query('INSERT INTO apartments SET ?', Object.assign(actual, {favorite: true}));
-    })
+    apartment.favorite = !apartment.favorite;
+    return save([apartment]);
 };
 
 const save_details = (apartment) => {
@@ -68,6 +74,7 @@ const save_images = (id, images = [], tx, resolve) => {
 module.exports = {
     getAll,
     getActive,
+    search,
     save,
     save_details,
     getFavorites,

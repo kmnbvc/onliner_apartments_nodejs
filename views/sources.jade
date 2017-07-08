@@ -16,7 +16,8 @@ block content
             each source in sources
                 tr
                     td= source.name
-                    td= source.url
+                    td
+                        a(href=source.url)= source.url
                     td
                         div.btn-group
                             button.btn.btn-default.btn-sm(onclick='change_source_state(#{JSON.stringify(source)}, this)')

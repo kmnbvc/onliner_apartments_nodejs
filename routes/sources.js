@@ -4,12 +4,11 @@ const sources_db = require('../service/sources_db');
 
 
 router.get('/', function (req, res, next) {
-    sources_db.getAllSources().then(sources => res.render('sources', {sources}), next);
+    sources_db.getAll().then(sources => res.render('sources', {sources}), next);
 });
 
 router.post('/change_state', function (req, res, next) {
     const source = req.body;
-    source.active = source.active === 'true';
     sources_db.update(source).then(() => res.send('done'), next);
 });
 

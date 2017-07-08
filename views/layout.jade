@@ -5,6 +5,8 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
         script(type='text/javascript', src='https://code.jquery.com/jquery-3.2.1.js')
+        script(type='text/javascript', src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+        script(type='text/javascript', src='/javascripts/load_details.js')
         script(type='text/javascript', src='/javascripts/script.js')
     body
         nav.navbar.navbar-default.navbar-fixed-top
@@ -12,12 +14,22 @@ html
                 ul.nav.navbar-nav
                     li
                         a(href='/' class="#{nav}") Show new
-                    li
-                        a(href='/saved') Show saved
+                    li.dropdown
+                        a.dropdown-toggle(href='#' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
+                            span Show saved
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                a(href='/saved') Show all
+                            each filter in filters
+                                li
+                                    a(href='/saved/filter/#{filter.name}') Show #{filter.name}
                     li
                         a(href='/favorites') Show favorites
                     li
                         a(href='/sources') Sources
+                    li
+                        a(href='/filters') Filters
                 block buttons
         div.container
             block content
