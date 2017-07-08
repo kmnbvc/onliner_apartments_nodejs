@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.post('/add', function (req, res, next) {
+router.post('/toggle', function (req, res, next) {
     const apartment = req.body;
     apartments_db.toggleFavorite(apartment).then(() => res.send('add favorite'), next);
 });

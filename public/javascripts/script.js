@@ -1,5 +1,5 @@
 function toggle_favorite(apartment, elem) {
-    $.post('/favorites/add', apartment, function (data) {
+    $.post('/favorites/toggle', apartment, function (data) {
         $(elem).toggleClass('favorite not-favorite');
     })
 }
