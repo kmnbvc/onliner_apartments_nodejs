@@ -25,7 +25,8 @@ const mappers = () => {
         photo_url: (obj) => obj.photo,
         active: (obj) => true,
         favorite: (obj) => false,
-        source_name: (obj) => obj.source.name
+        source_name: (obj) => obj.source.name,
+        text: (obj) => obj.text
     }
 };
 
