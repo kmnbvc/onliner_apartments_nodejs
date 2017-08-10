@@ -1,0 +1,20 @@
+{
+  "production": {
+    "db": {
+      "host": "",
+      "user": "",
+      "password": "",
+      "port": 3306,
+      "database": "onliner_apartments"
+    }
+  },
+  "development": {
+    "db": {
+      "host": "localhost",
+      "user": "root",
+      "password": "root",
+      "port": 3306,
+      "database": "onliner_apartments"
+    }
+  }
+}

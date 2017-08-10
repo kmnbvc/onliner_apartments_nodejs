@@ -29,12 +29,17 @@ app.use(function (req, res, next) {
     })
 });
 
+const health = (req, res) => {
+    res.writeHead(200);
+    res.end();
+};
 const index = require('./routes/index');
 const favorites_apartments = require('./routes/favorites');
 const saved_apartments = require('./routes/saved');
 const sources = require('./routes/sources');
 const filters = require('./routes/filters');
 
+app.use('/health', health);
 app.use('/', index);
 app.use('/favorites', favorites_apartments);
 app.use('/saved', saved_apartments);

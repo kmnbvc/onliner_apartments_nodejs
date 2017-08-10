@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const config = require('../config').db;
 
 const state = {
     pool: null
@@ -11,10 +12,11 @@ const get_pool = () => {
 const connect = function (callback) {
     state.pool = mysql.createPool({
         connectionLimit: 5,
-        host: 'localhost',
-        database: 'onliner_apartments',
-        user: 'root',
-        password: 'root',
+        host: config.host,
+        database: config.database,
+        user: config.user,
+        password: config.password,
+        port: config.port,
         dateStrings: true,
         typeCast: function (field, next) {
             if (field.type === 'TINY' && field.length === 1) {
