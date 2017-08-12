@@ -33,7 +33,7 @@ const query = (sql, params) => {
     return new Promise((resolve, reject) => {
         get_pool().query(sql, params, function (err, rows, fields) {
             if (err) reject(err);
-            resolve(rows);
+            else resolve(rows);
         })
     })
 };
@@ -42,9 +42,10 @@ const tx = (connection) => {
     const start = (callback) => {
         return new Promise((resolve, reject) =>
             connection.beginTransaction(error => {
-                if (error) throw error;
-
-                callback(resolve, reject);
+                if (error)
+                    reject(error);
+                else
+                    callback(resolve, reject);
             })
         )
     };
@@ -71,9 +72,10 @@ const tx = (connection) => {
 const createTx = () => {
     return new Promise((resolve, reject) =>
         get_pool().getConnection((error, connection) => {
-            if (error) throw error;
-
-            resolve(tx(connection));
+            if (error)
+                reject(error);
+            else
+                resolve(tx(connection));
         })
     );
 };

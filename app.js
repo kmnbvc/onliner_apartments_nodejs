@@ -26,7 +26,7 @@ app.use(function (req, res, next) {
     filters_db.getAll().then(filters => {
         res.locals.filters = filters;
         next();
-    })
+    }, err => res.send(err))
 });
 
 const health = (req, res) => {

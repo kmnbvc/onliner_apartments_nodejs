@@ -27,7 +27,12 @@ function sse(req, res, next) {
 
     // keep the connection open by sending a comment
     const keepAlive = setInterval(function () {
-        res.sse(':keep-alive\n\n');
+        if (!res.finished)
+            res.sse(':keep-alive\n\n');
+        else {
+            console.log('sse: response is already finished, stoping sse');
+            clearInterval(keepAlive);
+        }
     }, 20000);
 
     // cleanup on close

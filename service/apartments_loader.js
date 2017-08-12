@@ -1,7 +1,7 @@
 const client = require('flashheart').createClient({
     name: 'apartments_loader',
     logger: console,
-    retries: 5,
+    retries: 10,
     retryTimeout: 500,
     rateLimitLimit: 5,
     rateLimitInterval: 1000

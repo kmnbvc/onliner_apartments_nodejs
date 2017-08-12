@@ -21,7 +21,7 @@ const load_details = (function () {
         }, false);
 
         source.addEventListener('error', function (e) {
-            dialog.append($('<div class="alert alert-danger">').text(e.data || JSON.stringify(e)));
+            dialog.append($('<div class="alert alert-danger">').text(e.data));
         }, false);
     };
 

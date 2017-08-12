@@ -26,7 +26,7 @@ router.get('/load_details', sse, function (req, res, next) {
         .then(apartments => apartment_details.fetch_details(apartments))
         .then(results => {
             res.sse(`data: ${results.length}\n\n`, 'total');
-            const q = results.map(result => result.then(query => res.sse('data: done\n\n'), (err) => res.sse(`data: ${err}\n\n`, 'error')));
+            const q = results.map(result => result.then(query => res.sse('data: done\n\n'), err => res.sse(`data: ${err.code}: ${err.message}\n\n`, 'error')));
             return Promise.all(q).then(() => {
                 res.sse('data: finish\n\n', 'finish');
                 res.end();
