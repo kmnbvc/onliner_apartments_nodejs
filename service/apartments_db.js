@@ -11,7 +11,7 @@ const getActive = () => {
 };
 
 const getFavorites = () => {
-    return db.query('SELECT * FROM apartments a WHERE a.favorite = TRUE');
+    return db.query('SELECT * FROM apartments a WHERE a.favorite = TRUE ORDER BY a.updated DESC');
 };
 
 const search = (filter) => {
@@ -26,12 +26,12 @@ const search = (filter) => {
 };
 
 const save = (apartments) => {
-    return db.createTx().then(tx => tx.start((resolve, reject) => {
+    return db.createTx().then(tx => tx.start(() => {
         const ids = apartments_model.ids(apartments);
         tx.connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], tx.action(() => {
             const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
             const params = [apartments_model.toArray(apartments)];
-            tx.connection.query(query, params, tx.commit(resolve));
+            tx.connection.query(query, params, tx.commit);
         }))
     }))
 };
@@ -57,20 +57,28 @@ const save_details = (apartment) => {
     const images = details.images || [];
     delete details.images;
 
-    return db.createTx().then(tx => tx.start((resolve, reject) =>
-        tx.connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id],
-            (images.length > 0) ? save_images(id, images, tx, resolve) : tx.commit(resolve))));
+    return db.createTx().then(tx => tx.start(() =>
+        tx.connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id], tx.action(() => {
+                if (images.length > 0) {
+                    tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
+                        const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
+                        const params = [images.map(img => [id, img])];
+                        tx.connection.query(query, params, tx.commit);
+                    }))
+                } else {
+                    tx.commit()
+                }
+            })
+        )));
 };
 
-const save_images = (id, images = [], tx, resolve) => {
-    return tx.action(() =>
-        tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
-            const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
-            const params = [images.map(img => [id, img])];
-            tx.connection.query(query, params, tx.commit(resolve));
-        }))
-    )
-};
+const save_images = (id, images = [], tx) => tx.action(() => {
+    tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
+        const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
+        const params = [images.map(img => [id, img])];
+        tx.connection.query(query, params, tx.commit);
+    }))
+});
 
 module.exports = {
     getAll,

@@ -5,24 +5,28 @@ const load_details = (function () {
         source = new EventSource('/saved/load_details');
         const dialog = create_dialog();
 
-        source.addEventListener('message', function (e) {
+        source.addEventListener('message', function () {
             const current = $('#current', dialog);
             const current_val = parseInt(current.text());
             current.text(current_val + 1);
         }, false);
 
-        source.addEventListener('total', function (e) {
-            $('#total', dialog).text(e.data);
+        source.addEventListener('total', function (msg) {
+            $('#total', dialog).text(msg.data);
         }, false);
 
-        source.addEventListener('finish', function (e) {
+        source.addEventListener('finish', function () {
             finish();
             $('#total', dialog).append(' (finished)');
         }, false);
 
         source.addEventListener('error', function (e) {
-            dialog.append($('<div class="alert alert-danger">').text(e.data));
+            dialog.append($('<div class="alert alert-danger">').text(parse_error(e)));
         }, false);
+    };
+
+    const parse_error = (err) => {
+        return err.data || (source.readyState === EventSource.CONNECTING ? 'An error occurred during a connection' : 'Unknown error occured');
     };
 
     const finish = () => {

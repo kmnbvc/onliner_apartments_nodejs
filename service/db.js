@@ -39,13 +39,19 @@ const query = (sql, params) => {
 };
 
 const tx = (connection) => {
+    let _resolve;
+    let _reject;
+
     const start = (callback) => {
         return new Promise((resolve, reject) =>
             connection.beginTransaction(error => {
                 if (error)
                     reject(error);
-                else
-                    callback(resolve, reject);
+                else {
+                    _resolve = resolve;
+                    _reject = reject;
+                    callback();
+                }
             })
         )
     };
@@ -53,18 +59,16 @@ const tx = (connection) => {
     const action = (callback) => (error) => {
         if (error) {
             return connection.rollback(() => {
-                throw error;
+                _reject(error);
             })
         }
         if (callback) callback();
     };
 
-    const commit = (callback) => {
-        return action(() => {
-            connection.commit(action(callback));
-            connection.release();
-        })
-    };
+    const commit = action(() => {
+        connection.commit(action(_resolve));
+        connection.release();
+    });
 
     return {connection, start, action, commit};
 };

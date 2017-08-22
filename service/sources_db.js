@@ -9,13 +9,13 @@ const getActiveSources = () => {
 };
 
 const update = (source) => {
-    return db.createTx().then(tx => tx.start((resolve, reject) =>
-        tx.connection.query('UPDATE sources SET ? WHERE name = ?', [source, source.name], tx.commit(resolve))));
+    return db.createTx().then(tx => tx.start(() =>
+        tx.connection.query('UPDATE sources SET ? WHERE name = ?', [source, source.name], tx.commit)));
 };
 
 const remove = (name) => {
-    return db.createTx().then(tx => tx.start((resolve, reject) =>
-        tx.connection.query('DELETE FROM sources WHERE name = ?', [name], tx.commit(resolve))));
+    return db.createTx().then(tx => tx.start(() =>
+        tx.connection.query('DELETE FROM sources WHERE name = ?', [name], tx.commit)));
 };
 
 const create = (source) => {
