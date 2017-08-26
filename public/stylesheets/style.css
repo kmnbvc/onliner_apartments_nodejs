@@ -12,6 +12,10 @@ dialog {
     border: 1px solid lightgrey;
 }
 
+dialog > button {
+    margin-left: 5px;
+}
+
 a.icon, a.icon:hover {
     text-decoration: none;
     color: inherit;

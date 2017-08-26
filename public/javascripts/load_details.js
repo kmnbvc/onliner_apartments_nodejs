@@ -36,8 +36,10 @@ const load_details = (function () {
     const create_dialog = () => {
         const dialog = $('<dialog>');
         dialog.append($('<div class="panel panel-default panel-body">Loading details for apartments: <span id="current">0</span>/<span id="total"></span></div>'));
-        dialog.append($('<button>Close</button>'));
-        $('button', dialog).on('click', () => dialog[0].close());
+        dialog.append($('<button id="close">Close</button>'));
+        dialog.append($('<button id="reload">Reload page</button>'));
+        $('#close', dialog).on('click', () => dialog[0].close());
+        $('#reload', dialog).on('click', () => location.reload());
         $(document.body).append(dialog);
         dialog[0].showModal();
         return dialog;

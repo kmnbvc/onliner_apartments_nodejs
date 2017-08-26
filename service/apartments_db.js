@@ -54,31 +54,22 @@ const toggleFavorite = (apartment) => {
 
 const save_details = (apartment) => {
     const {id, details} = apartment;
-    const images = details.images || [];
+    const images = details.images;
     delete details.images;
 
     return db.createTx().then(tx => tx.start(() =>
-        tx.connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id], tx.action(() => {
-                if (images.length > 0) {
-                    tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
-                        const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
-                        const params = [images.map(img => [id, img])];
-                        tx.connection.query(query, params, tx.commit);
-                    }))
-                } else {
-                    tx.commit()
-                }
-            })
-        )));
+        tx.connection.query('UPDATE apartments SET ? WHERE id = ?', [details, id], save_images(id, images, tx))));
 };
 
-const save_images = (id, images = [], tx) => tx.action(() => {
-    tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
-        const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
-        const params = [images.map(img => [id, img])];
-        tx.connection.query(query, params, tx.commit);
-    }))
-});
+const save_images = (id, images = [], tx) => {
+    return (images.length > 0) ? tx.action(() => {
+        tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
+            const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
+            const params = [images.map(img => [id, img])];
+            tx.connection.query(query, params, tx.commit);
+        }))
+    }) : tx.commit;
+};
 
 module.exports = {
     getAll,
