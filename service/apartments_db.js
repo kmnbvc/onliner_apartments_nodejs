@@ -63,11 +63,8 @@ const save_details = (apartment) => {
 
 const save_images = (id, images = [], tx) => {
     return (images.length > 0) ? tx.action(() => {
-        tx.connection.query('DELETE FROM images WHERE apartment_id = ?', [id], tx.action(() => {
-            const query = 'INSERT INTO images (apartment_id, url) VALUES ?';
-            const params = [images.map(img => [id, img])];
-            tx.connection.query(query, params, tx.commit);
-        }))
+        const params = [images.map(img => [id, img])];
+        tx.connection.query('REPLACE INTO images (apartment_id, url) VALUES ?', params, tx.commit);
     }) : tx.commit;
 };
 

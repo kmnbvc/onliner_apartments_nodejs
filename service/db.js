@@ -56,13 +56,13 @@ const tx = (connection) => {
         )
     };
 
-    const action = (callback) => (error) => {
+    const action = (callback) => (error, results) => {
         if (error) {
             return connection.rollback(() => {
                 _reject(error);
             })
         }
-        if (callback) callback();
+        if (callback) callback(results);
     };
 
     const commit = action(() => {
