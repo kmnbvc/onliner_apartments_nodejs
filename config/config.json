@@ -1,9 +1,9 @@
 {
   "production": {
     "db": {
-      "host": "",
-      "user": "",
-      "password": "",
+      "host": "${MYSQL_SERVICE_HOST}",
+      "user": "${MYSQL_USER}",
+      "password": "${MYSQL_PASSWORD}",
       "port": 3306,
       "database": "onliner_apartments"
     }
