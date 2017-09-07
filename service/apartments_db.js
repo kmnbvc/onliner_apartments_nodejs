@@ -52,6 +52,12 @@ const toggleFavorite = (apartment) => {
     return save([apartment]);
 };
 
+const clear_favorites = (only_inactive = true) => {
+    const query = 'UPDATE apartments SET favorite = FALSE WHERE favorite = TRUE ' +
+        (only_inactive ? 'AND active = FALSE ' : '');
+    return db.query(query);
+};
+
 const save_details = (apartment) => {
     const {id, details} = apartment;
     const images = details.images;
@@ -77,5 +83,6 @@ module.exports = {
     getFavorites,
     filterNew,
     deleteAll,
-    toggleFavorite
+    toggleFavorite,
+    clear_favorites
 };

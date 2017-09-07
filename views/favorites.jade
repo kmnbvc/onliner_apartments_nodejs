@@ -1,0 +1,7 @@
+extends table
+
+block buttons
+    form.navbar-form.navbar-right
+        div.btn-toolbar
+            button.btn.btn-default(formaction="/favorites/clear_inactive" disabled=apartments.length <= 0) Clear inactive
+            button.btn.btn-default(formaction="/favorites/clear_all" disabled=apartments.length <= 0) Clear all
