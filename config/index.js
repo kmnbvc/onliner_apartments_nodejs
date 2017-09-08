@@ -1,5 +1,6 @@
-const env = process.env.NODE_ENV || 'development',
-    cfg = require('./config')[env];
+const env = process.env,
+    env_name = env.NODE_ENV || 'development',
+    cfg = require('./config')[env_name];
 
 const apply_env_params = (cfg) => {
     const result = {};
@@ -7,6 +8,8 @@ const apply_env_params = (cfg) => {
         if (typeof value === 'string' && value.startsWith('${') && value.endsWith('}')) {
             const param = value.substring(2, value.length - 1);
             result[key] = env[param] || value;
+        } else if (typeof value === 'object') {
+            result[key] = apply_env_params(value);
         } else
             result[key] = value;
     }

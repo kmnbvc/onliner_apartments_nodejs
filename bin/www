@@ -4,10 +4,9 @@ const http = require('http');
 const env = process.env;
 const OPENSHIFT_SERVICE_NAME = (env.OPENSHIFT_BUILD_NAMESPACE || '').toUpperCase();
 const OPENSHIFT_PORT = env[`${OPENSHIFT_SERVICE_NAME}_SERVICE_PORT`];
-const OPENSHIFT_HOST = env[`${OPENSHIFT_SERVICE_NAME}_SERVICE_HOST`];
 
 const port = normalizePort(env.NODE_PORT || OPENSHIFT_PORT || '3000');
-const hostname = env.NODE_IP || OPENSHIFT_HOST || 'localhost';
+const hostname = env.NODE_IP || '0.0.0.0';
 app.set('port', port);
 
 const server = http.createServer(app);
