@@ -33,6 +33,22 @@ a.icon.not-favorite:hover:before {
     content: '★';
 }
 
+a.icon.ignored:before {
+    content: '✗';
+}
+
+a.icon.not-ignored:before {
+    content: '✓';
+}
+
+a.icon.not-ignored:hover:before {
+    content: '✗';
+}
+
+a.icon {
+    margin-right: 3px;
+}
+
 table.sources, table.apartments {
     table-layout: fixed;
 }

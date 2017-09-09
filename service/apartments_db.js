@@ -3,7 +3,7 @@ const apartments_model = require('../model/apartments');
 const moment = require('moment');
 
 const getAll = () => {
-    return db.query('SELECT * FROM apartments ORDER BY updated DESC');
+    return db.query('SELECT * FROM apartments a ORDER BY a.updated DESC');
 };
 
 const getActive = () => {
@@ -14,8 +14,12 @@ const getFavorites = () => {
     return db.query('SELECT * FROM apartments a WHERE a.favorite = TRUE ORDER BY a.updated DESC');
 };
 
-const search = (filter) => {
-    const query = 'SELECT * FROM apartments a WHERE 1=1 ' +
+const getIgnored = () => {
+    return db.query('SELECT * FROM apartments a WHERE a.ignored = TRUE ORDER BY a.updated DESC');
+};
+
+const search = (filter = {}) => {
+    const query = 'SELECT * FROM apartments a WHERE ignored = FALSE ' +
         (filter.from_date ? ` AND a.updated >= ${filter.from_date}` : '') +
         (filter.active === 'ACTIVE_ONLY' ? ' AND a.active = TRUE' : '') +
         (filter.active === 'INACTIVE_ONLY' ? ' AND a.active = FALSE' : '') +
@@ -27,12 +31,9 @@ const search = (filter) => {
 
 const save = (apartments) => {
     return db.createTx().then(tx => tx.start(() => {
-        const ids = apartments_model.ids(apartments);
-        tx.connection.query('DELETE FROM apartments WHERE id IN (?)', [ids], tx.action(() => {
-            const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
-            const params = [apartments_model.toArray(apartments)];
-            tx.connection.query(query, params, tx.commit);
-        }))
+        const query = `INSERT INTO apartments (${apartments_model.fields().join(',')}) VALUES ?`;
+        const params = [apartments_model.toArray(apartments)];
+        tx.connection.query(query, params, tx.commit);
     }))
 };
 
@@ -47,9 +48,20 @@ const deleteAll = () => {
     return db.query('DELETE FROM apartments');
 };
 
-const toggleFavorite = (apartment) => {
-    apartment.favorite = !apartment.favorite;
-    return save([apartment]);
+const toggle_favorite = (id) => {
+    return db.createTx().then(tx => tx.start(() =>
+        tx.connection.query('SELECT * FROM apartments WHERE id = ?', [id], tx.action(results => {
+            tx.connection.query('UPDATE apartments SET favorite = ? WHERE id = ?', [!results[0].favorite, id], tx.commit);
+        }))
+    ));
+};
+
+const toggle_ignored = (id) => {
+    return db.createTx().then(tx => tx.start(() =>
+        tx.connection.query('SELECT * FROM apartments WHERE id = ?', [id], tx.action(results => {
+            tx.connection.query('UPDATE apartments SET ignored = ? WHERE id = ?', [!results[0].ignored, id], tx.commit);
+        }))
+    ));
 };
 
 const clear_favorites = (only_inactive = true) => {
@@ -77,12 +89,14 @@ const save_images = (id, images = [], tx) => {
 module.exports = {
     getAll,
     getActive,
+    getFavorites,
+    getIgnored,
     search,
     save,
     save_details,
-    getFavorites,
     filterNew,
     deleteAll,
-    toggleFavorite,
+    toggle_favorite,
+    toggle_ignored,
     clear_favorites
 };

@@ -5,12 +5,16 @@ const apartments_db = require('../service/apartments_db');
 
 router.get('/', function (req, res, next) {
     apartments_db.getFavorites()
-        .then(apartments => res.render('favorites', {title: 'Favorites apartments', apartments, showDetails: true}), next);
+        .then(apartments => res.render('favorites', {
+            title: 'Favorite apartments',
+            apartments,
+            showDetails: true
+        }), next);
 });
 
 router.post('/toggle', function (req, res, next) {
-    const apartment = req.body;
-    apartments_db.toggleFavorite(apartment).then(() => res.send('add favorite'), next);
+    const id = req.body.id;
+    apartments_db.toggle_favorite(id).then(() => res.send('toggle favorite done'), next);
 });
 
 router.get('/clear_all', function (req, res, next) {

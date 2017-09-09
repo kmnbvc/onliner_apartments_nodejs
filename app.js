@@ -38,6 +38,7 @@ const favorites_apartments = require('./routes/favorites');
 const saved_apartments = require('./routes/saved');
 const sources = require('./routes/sources');
 const filters = require('./routes/filters');
+const ignored_apartments = require('./routes/ignored');
 
 app.use('/health', health);
 app.use('/', index);
@@ -45,6 +46,7 @@ app.use('/favorites', favorites_apartments);
 app.use('/saved', saved_apartments);
 app.use('/sources', sources);
 app.use('/filters', filters);
+app.use('/ignored', ignored_apartments);
 
 app.locals.moment = moment;
 app.locals.format_date = (date) => {

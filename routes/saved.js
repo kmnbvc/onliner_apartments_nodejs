@@ -6,15 +6,15 @@ const apartment_details = require('../service/apartments_details');
 const sse = require('../middleware/sse');
 
 router.get('/', function (req, res, next) {
-    apartments_db.getAll()
-        .then(apartments => res.render('saved', {title: 'Previous apartments', apartments, showDetails: true}), next)
+    apartments_db.search()
+        .then(apartments => res.render('saved', {title: 'Saved apartments', apartments, showDetails: true}), next)
 });
 
 router.get('/filter/:filter', function (req, res, next) {
     const filter_name = req.params.filter;
     filters_db.get(filter_name)
         .then(filter => apartments_db.search(filter))
-        .then(apartments => res.render('saved', {title: 'Previous apartments', apartments, showDetails: true}), next)
+        .then(apartments => res.render('saved', {title: `${filter_name} apartments`, apartments, showDetails: true}), next)
 });
 
 router.get('/delete', function (req, res, next) {

@@ -1,6 +1,12 @@
-function toggle_favorite(apartment, elem) {
-    $.post('/favorites/toggle', apartment, function (data) {
+function toggle_favorite(id, elem) {
+    sendPost('/favorites/toggle', {id}, function (data) {
         $(elem).toggleClass('favorite not-favorite');
+    })
+}
+
+function toggle_ignored(id, elem) {
+    sendPost('/ignored/toggle', {id}, function (data) {
+        $(elem).toggleClass('ignored not-ignored');
     })
 }
 
