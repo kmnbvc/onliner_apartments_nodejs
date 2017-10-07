@@ -22,4 +22,9 @@ router.post('/add', function (req, res, next) {
     sources_db.create(source).then(() => res.redirect(req.baseUrl), next);
 });
 
+router.post('/update', function (req, res, next) {
+    const source = req.body;
+    sources_db.update(source).then(() => res.redirect(req.baseUrl), next);
+});
+
 module.exports = router;

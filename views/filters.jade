@@ -23,7 +23,8 @@ block content
                     td= filter.source_name
                     td
                         div.btn-group
-                            button.btn.btn-default.btn-sm(onclick='edit_filter(#{JSON.stringify(filter)}); return false;') Edit
+                            button.btn.btn-default.btn-sm(onclick='edit_filter(#{JSON.stringify(filter)}); return false;', title='Edit')
+                                span.glyphicon.glyphicon-pencil
                             button.btn.btn-default.btn-sm(onclick='remove_filter("#{filter.name}", this); return false;', title='Delete')
                                 span.glyphicon.glyphicon-trash
 

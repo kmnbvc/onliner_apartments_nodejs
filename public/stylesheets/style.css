@@ -16,36 +16,10 @@ dialog > button {
     margin-left: 5px;
 }
 
-a.icon, a.icon:hover {
-    text-decoration: none;
-    color: inherit;
-}
-
-a.icon.favorite:before {
-    content: '★';
-}
-
-a.icon.not-favorite:before {
-    content: '☆';
-}
-
-a.icon.not-favorite:hover:before {
-    content: '★';
-}
-
-a.icon.ignored:before {
-    content: '✗';
-}
-
-a.icon.not-ignored:before {
-    content: '✓';
-}
-
-a.icon.not-ignored:hover:before {
-    content: '✗';
-}
-
-a.icon {
+a.glyphicon {
+    text-decoration: none !important;
+    color: inherit !important;
+    font-size: 12px !important;
     margin-right: 3px;
 }
 
@@ -62,7 +36,7 @@ table.sources tr>td:nth-child(2) {
 }
 
 table.sources tr>th:nth-child(3) {
-    width: 8%;
+    width: 11%;
 }
 
 tr.not-active {

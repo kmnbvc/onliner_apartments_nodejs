@@ -20,6 +20,8 @@ block content
                         a(href=source.url)= source.url
                     td
                         div.btn-group
+                            button.btn.btn-default.btn-sm(onclick='edit_source(#{JSON.stringify(source)}); return false;', title='Edit')
+                                span.glyphicon.glyphicon-pencil
                             button.btn.btn-default.btn-sm(onclick='change_source_state(#{JSON.stringify(source)}, this)')
                                 span.glyphicon(class=source.active ? 'glyphicon-remove' : 'glyphicon-ok')
                             button.btn.btn-default.btn-sm(onclick='remove_source("#{source.name}", this); return false;', title='Delete')

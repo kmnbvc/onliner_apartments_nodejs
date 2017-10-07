@@ -1,12 +1,12 @@
 function toggle_favorite(id, elem) {
     sendPost('/favorites/toggle', {id}, function (data) {
-        $(elem).toggleClass('favorite not-favorite');
+        $(elem).toggleClass('glyphicon-star glyphicon-star-empty');
     })
 }
 
 function toggle_ignored(id, elem) {
     sendPost('/ignored/toggle', {id}, function (data) {
-        $(elem).toggleClass('ignored not-ignored');
+        $(elem).toggleClass('glyphicon-ok glyphicon-ban-circle');
     })
 }
 
@@ -16,6 +16,20 @@ function change_source_state(source, elem) {
         elem.source_state = source.active;
         $(elem).children('span.glyphicon').toggleClass('glyphicon-ok glyphicon-remove');
     })
+}
+
+function add_source() {
+    $('form', '#add_source')[0].reset();
+    $('form', '#add_source').attr('action', '/sources/add');
+    show_modal('add_source');
+}
+
+function edit_source(source) {
+    for (let [key, value] of entries(source)) {
+        $(`:input[name=${key}]`, '#add_source').val(value);
+    }
+    $('form', '#add_source').attr('action', '/sources/update');
+    show_modal('add_source');
 }
 
 function remove_source(name, elem) {
