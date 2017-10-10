@@ -46,3 +46,10 @@ tr.not-active {
 span.caret {
     margin-left: 5px;
 }
+
+li.btn-group > a.btn {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

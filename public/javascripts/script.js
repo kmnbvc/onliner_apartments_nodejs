@@ -79,7 +79,7 @@ function* entries(obj) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    $(`nav li a[href='${window.location.pathname}']`).parents('li').addClass('active');
+    $(`nav li a[href='${decodeURIComponent(window.location.pathname)}']`).parents('li').addClass('active');
 });
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -7,7 +7,7 @@ const getAll = () => {
 };
 
 const getActive = () => {
-    return db.query('SELECT * FROM apartments a WHERE a.active = TRUE ORDER BY a.updated DESC');
+    return db.query('SELECT * FROM apartments a WHERE a.active = TRUE AND a.ignored = FALSE ORDER BY a.updated DESC');
 };
 
 const getFavorites = () => {
@@ -19,7 +19,7 @@ const getIgnored = () => {
 };
 
 const search = (filter = {}) => {
-    const query = 'SELECT * FROM apartments a WHERE ignored = FALSE ' +
+    const query = 'SELECT * FROM apartments a WHERE a.ignored = FALSE ' +
         (filter.from_date ? ` AND a.updated >= ${filter.from_date}` : '') +
         (filter.active === 'ACTIVE_ONLY' ? ' AND a.active = TRUE' : '') +
         (filter.active === 'INACTIVE_ONLY' ? ' AND a.active = FALSE' : '') +

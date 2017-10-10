@@ -7,7 +7,12 @@ const sse = require('../middleware/sse');
 
 router.get('/', function (req, res, next) {
     apartments_db.search()
-        .then(apartments => res.render('saved', {title: 'Saved apartments', apartments, showDetails: true}), next)
+        .then(apartments => res.render('saved', {title: 'All apartments', apartments, showDetails: true}), next)
+});
+
+router.get('/active', function (req, res, next) {
+    apartments_db.getActive()
+        .then(apartments => res.render('saved', {title: 'Active apartments', apartments, showDetails: true}), next)
 });
 
 router.get('/filter/:filter', function (req, res, next) {

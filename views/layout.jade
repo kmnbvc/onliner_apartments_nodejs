@@ -13,10 +13,10 @@ html
             div.container
                 ul.nav.navbar-nav
                     li
-                        a(href='/' class="#{nav}") Show new
-                    li.dropdown
-                        a.dropdown-toggle(href='#' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
-                            span Show saved
+                        a(href='/') Show new
+                    li.dropdown.btn-group
+                        a.btn(href='/saved/active') Show saved
+                        a.btn.dropdown-toggle(href='#' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
                             span.caret
                         ul.dropdown-menu
                             li

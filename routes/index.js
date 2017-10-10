@@ -14,7 +14,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/save', function (req, res, next) {
     const apartments = JSON.parse(req.body.apartments);
-    apartments_db.save(apartments).then(result => res.redirect('/saved'), next);
+    apartments_db.save(apartments).then(result => res.redirect('/saved/active'), next);
 });
 
 module.exports = router;
