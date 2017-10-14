@@ -5,8 +5,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const bodyValuesParser = require('./middleware/body_values_parser');
-const moment = require('moment');
 const filters_db = require('./service/filters_db');
+const dateFormatter = require('./middleware/date_formatter');
 
 const app = express();
 
@@ -17,10 +17,11 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyValuesParser());
+app.use(bodyValuesParser);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
+app.use(dateFormatter);
 
 app.use(function (req, res, next) {
     filters_db.getAll().then(filters => {
@@ -47,11 +48,6 @@ app.use('/saved', saved_apartments);
 app.use('/sources', sources);
 app.use('/filters', filters);
 app.use('/ignored', ignored_apartments);
-
-app.locals.moment = moment;
-app.locals.format_date = (date) => {
-    return date ? moment(date).format('YYYY-MM-DD HH:mm:ss') : '';
-};
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

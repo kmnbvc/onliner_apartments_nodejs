@@ -1,6 +1,5 @@
 const db = require('./db');
 const apartments_model = require('../model/apartments');
-const moment = require('moment');
 
 const getAll = () => {
     return db.query('SELECT * FROM apartments a ORDER BY a.updated DESC');

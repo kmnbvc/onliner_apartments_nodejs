@@ -1,14 +1,3 @@
-const parser = function () {
-    return function (req, res, next) {
-        if (req.body) {
-            req.body = parse(req.body);
-        } else {
-            console.log('body-values-parser: req.body is empty', req);
-        }
-        next();
-    };
-};
-
 const parse = (obj) => {
     const result = {};
 
@@ -34,5 +23,14 @@ function* entries(obj) {
         yield [key, obj[key]];
     }
 }
+
+const parser = (req, res, next) => {
+    if (req.body) {
+        req.body = parse(req.body);
+    } else {
+        console.log('body-values-parser: req.body is empty', req);
+    }
+    next();
+};
 
 module.exports = parser;
