@@ -18,8 +18,8 @@ block content
             each ap in apartments
                 tr(class=ap.active ? '' : 'not-active')
                     td
-                        a.glyphicon(href='#', onclick='toggle_favorite(#{ap.id}, this); return false;', class=ap.favorite ? 'glyphicon-star' : 'glyphicon-star-empty')
-                        a.glyphicon(href='#', onclick='toggle_ignored(#{ap.id}, this); return false;', class=ap.ignored ? 'glyphicon-ok' : 'glyphicon-ban-circle')
+                        a.glyphicon(href='#', onclick='toggle_favorite(#{JSON.stringify(ap)}, this); return false;', class=ap.favorite ? 'glyphicon-star' : 'glyphicon-star-empty')
+                        a.glyphicon(href='#', onclick='toggle_ignored(#{JSON.stringify(ap)}, this); return false;', class=ap.ignored ? 'glyphicon-ok' : 'glyphicon-ban-circle')
                     td= ap.id
                     td= format_date(ap.updated)
                     td= (ap.price + ' ' + ap.currency)

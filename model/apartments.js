@@ -40,8 +40,8 @@ const fields = () => {
     return Object.keys(mappers());
 };
 
-const toArray = (apartments) => {
-    return apartments.map(ap => fields().map(field => ap[field]));
+const toArray = (apartments, custom_values = {}) => {
+    return apartments.map(ap => fields().map(field => custom_values[field] || ap[field]));
 };
 
 module.exports = {get_dto, get_dto_list, ids, fields, toArray};

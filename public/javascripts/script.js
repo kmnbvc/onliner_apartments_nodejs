@@ -1,11 +1,11 @@
-function toggle_favorite(id, elem) {
-    sendPost('/favorites/toggle', {id}, function (data) {
+function toggle_favorite(apartment, elem) {
+    sendPost('/favorites/toggle', apartment, function (data) {
         $(elem).toggleClass('glyphicon-star glyphicon-star-empty');
     })
 }
 
-function toggle_ignored(id, elem) {
-    sendPost('/ignored/toggle', {id}, function (data) {
+function toggle_ignored(apartment, elem) {
+    sendPost('/ignored/toggle', apartment, function (data) {
         $(elem).toggleClass('glyphicon-ok glyphicon-ban-circle');
     })
 }

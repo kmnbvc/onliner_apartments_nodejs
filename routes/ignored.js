@@ -11,8 +11,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/toggle', function (req, res, next) {
-    const id = req.body.id;
-    apartments_db.toggle_ignored(id).then(() => res.send('toggle ignored done'), next);
+    const apartment = req.body;
+    apartments_db.toggle_ignored(apartment).then(() => res.send('toggle ignored done'), next);
 });
 
 module.exports = router;

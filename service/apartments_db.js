@@ -49,20 +49,16 @@ const deleteAll = () => {
     return db.query('DELETE FROM apartments');
 };
 
-const toggle_favorite = (id) => {
-    return db.createTx().then(tx => tx.start(() =>
-        tx.connection.query('SELECT * FROM apartments WHERE id = ?', [id], tx.action(results => {
-            tx.connection.query('UPDATE apartments SET favorite = ? WHERE id = ?', [!results[0].favorite, id], tx.commit);
-        }))
-    ));
+const toggle_favorite = (apartment) => {
+    const fields = apartments_model.fields().join(',');
+    const values = apartments_model.toArray([apartment], {favorite: true});
+    return db.query(`INSERT INTO apartments (${fields}) VALUES (?) ON DUPLICATE KEY UPDATE favorite = NOT favorite`, values);
 };
 
-const toggle_ignored = (id) => {
-    return db.createTx().then(tx => tx.start(() =>
-        tx.connection.query('SELECT * FROM apartments WHERE id = ?', [id], tx.action(results => {
-            tx.connection.query('UPDATE apartments SET ignored = ? WHERE id = ?', [!results[0].ignored, id], tx.commit);
-        }))
-    ));
+const toggle_ignored = (apartment) => {
+    const fields = apartments_model.fields().join(',');
+    const values = apartments_model.toArray([apartment], {ignored: true});
+    return db.query(`INSERT INTO apartments (${fields}) VALUES (?) ON DUPLICATE KEY UPDATE ignored = NOT ignored`, values);
 };
 
 const clear_favorites = (only_inactive = true) => {
