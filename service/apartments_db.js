@@ -23,6 +23,8 @@ const search = (filter = {}) => {
         (filter.active === 'ACTIVE_ONLY' ? ' AND a.active = TRUE' : '') +
         (filter.active === 'INACTIVE_ONLY' ? ' AND a.active = FALSE' : '') +
         (filter.source_name ? ` AND a.source_name = '${filter.source_name}'` : '') +
+        (filter.owner === 'OWNER' ? ' AND a.owner = TRUE ' : '') +
+        (filter.owner === 'NOT_OWNER' ? ' AND a.owner = FALSE ' : '') +
         ' ORDER BY a.updated DESC';
 
     return db.query(query);

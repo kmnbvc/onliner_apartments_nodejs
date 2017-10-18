@@ -13,6 +13,7 @@ block content
                 th Active
                 th From date
                 th Source
+                th Owner
                 th Actions
         tbody
             each filter in filters
@@ -21,6 +22,7 @@ block content
                     td= filter.active
                     td= format_date(filter.from_date)
                     td= filter.source_name
+                    td= filter.owner
                     td
                         div.btn-group
                             button.btn.btn-default.btn-sm(onclick='edit_filter(#{JSON.stringify(filter)}); return false;', title='Edit')
@@ -50,6 +52,12 @@ block content
                     option(value='') None
                     each source in sources
                         option= source.name
+            div.form-group
+                label(for='owner') Owner
+                select.form-control(id='owner' name='owner')
+                    option ANY
+                    option OWNER
+                    option NOT_OWNER
             div.btn-toolbar
                 button.btn.btn-default Сохранить
                 button.btn.btn-default(onclick='hide_modal("add_filter"); return false;') Отмена

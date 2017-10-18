@@ -27,7 +27,8 @@ const mappers = () => {
         favorite: (obj) => false,
         source_name: (obj) => obj.source.name,
         text: (obj) => obj.text,
-        ignored: (obj) => false
+        ignored: (obj) => false,
+        owner: (obj) => obj.contact.owner
     }
 };
 
