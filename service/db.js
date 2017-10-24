@@ -41,6 +41,7 @@ const query = (sql, params) => {
 const tx = (connection) => {
     let _resolve;
     let _reject;
+    let _try = 0;
 
     const start = (callback) => {
         return new Promise((resolve, reject) =>
@@ -53,7 +54,14 @@ const tx = (connection) => {
                     callback();
                 }
             })
-        )
+        ).catch(err => {
+            if (err.code === 'ER_LOCK_DEADLOCK' && _try < 3) {
+                console.error('Deadlock found when trying to get lock; restarting transaction, try: %s', _try);
+                _try += 1;
+                return new Promise(resolve => setTimeout(resolve, 500)).then(() => start(callback));
+            }
+            throw err;
+        })
     };
 
     const action = (callback) => (error, results) => {

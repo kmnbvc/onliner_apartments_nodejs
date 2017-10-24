@@ -79,7 +79,7 @@ const save_details = (apartment) => {
 const save_images = (id, images = [], tx) => {
     return (images.length > 0) ? tx.action(() => {
         const params = [images.map(img => [id, img])];
-        tx.connection.query('REPLACE INTO images (apartment_id, url) VALUES ?', params, tx.commit);
+        tx.connection.query('INSERT INTO images (apartment_id, url) VALUES ? ON DUPLICATE KEY UPDATE id = id', params, tx.commit);
     }) : tx.commit;
 };
 

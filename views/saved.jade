@@ -4,4 +4,4 @@ block buttons
     form.navbar-form.navbar-right(action='/saved')
         div.btn-toolbar
             button.btn.btn-default(onclick='load_details.start(); return false;' disabled=apartments.length <= 0) Load details
-            button.btn.btn-default(formaction="/saved/delete" disabled=apartments.length <= 0) Delete all
+            button.btn.btn-default(onclick='return confirm("All data will be deleted, are you sure?");' formaction='/saved/delete' disabled=apartments.length <= 0) Delete all
